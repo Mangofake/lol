@@ -1,13 +1,7 @@
 pluginManagement {
 	repositories {
-		gradlePluginPortal()               // for maven-publish, etc.
-		mavenCentral()                     // for everything on Maven Central
-		maven { url = "https://maven.fabricmc.net/" }  // for fabric-loom
-	}
-	plugins {
-		// declare the fabric-loom plugin here (no need to repeat version in build.gradle)
-		id "fabric-loom" version "0.14.22"
+		gradlePluginPortal()                      // for public Gradle plugins
+		maven { url 'https://maven.fabricmc.net/' }  // for fabric-loom plugin
 	}
 }
-
-rootProject.name = "lol"
+rootProject.name = 'lol'
