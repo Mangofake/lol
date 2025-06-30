@@ -1,0 +1,51 @@
+plugins {
+	id 'fabric-loom'      // version is taken from settings.gradle
+	id 'maven-publish'
+}
+
+version = project.findProperty('mod_version')      ?: '1.0.0'
+group   = project.findProperty('maven_group')      ?: 'net.mango.tunieland'
+archivesBaseName = project.findProperty('archives_base_name') ?: 'tunieland'
+
+repositories {
+	mavenCentral()
+	maven { url = 'https://maven.fabricmc.net/' }
+	maven { url = 'https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/' }
+}
+
+dependencies {
+	minecraft     "com.mojang:minecraft:1.20.1"
+	mappings       "net.fabricmc:yarn:1.20.1+build.10:v2"
+
+	// Fabric API (includes item-group api)
+	modImplementation "net.fabricmc.fabric-api:fabric-api:0.87.0+1.20.1"
+
+	// GeckoLib (for your mosquito/dog animations)
+	modImplementation "software.bernie.geckolib:geckolib-fabric-1.20.1:4.2.2"
+}
+
+processResources {
+	inputs.property "version", project.version
+	filesMatching("fabric.mod.json") {
+		expand version: project.version
+	}
+}
+
+tasks.withType(JavaCompile).configureEach {
+	it.options.release = 21
+}
+
+java {
+	withSourcesJar()
+	sourceCompatibility = '21'
+	targetCompatibility = '21'
+}
+
+publishing {
+	publications {
+		create('mavenJava', MavenPublication) {
+			artifactId = archivesBaseName
+			from components.java
+		}
+	}
+}
