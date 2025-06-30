@@ -1,42 +1,40 @@
 plugins {
-	id 'fabric-loom' version '1.9.2'
+	id 'fabric-loom' version '1.3-SNAPSHOT'   // adjust if you’re on a newer Loom
 	id 'maven-publish'
 }
 
-group = 'net.mango.tunieland'
-version = '1.0.0'
+group = "net.mango.lol"
+version = "1.0.0"
+archivesBaseName = "lol"
+
+java {
+	sourceCompatibility = JavaVersion.VERSION_17
+	targetCompatibility = JavaVersion.VERSION_17
+}
 
 repositories {
 	mavenCentral()
-	maven { url = 'https://maven.fabricmc.net/' }                 // Minecraft/Fabric
-	maven { url = 'https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/' } // Geckolib
-	maven { url = 'https://maven.willbl.dev/releases/' }          // For com.eliotlash.mclib:mclib:20
+	// ← Fabric’s official Maven (hosts loader, API, mappings…)
+	maven { url = "https://maven.fabricmc.net/" }
+	// ← GeckoLib releases (optional)
+	maven { url = "https://maven.terraformersmc.com/releases" }
 }
 
 dependencies {
-	minecraft     'com.mojang:minecraft:1.20.1'
-	mappings       'net.fabricmc:yarn:1.20.1+build.10:v2'
+	// The Minecraft game and Yarn mappings
+	minecraft "com.mojang:minecraft:1.20.1"
+	mappings   "net.fabricmc:yarn:1.20.1+build.5:v2"
 
-	modImplementation 'net.fabricmc.fabric-loader:0.14.22'
-	modImplementation 'net.fabricmc.fabric-api:fabric-api:0.87.0+1.20.1'
-	modImplementation 'net.fabricmc.fabric-api:fabric-item-group-api-v1:0.87.0+1.20.1'
-	modImplementation 'net.fabricmc.fabric-api:fabric-entity-attribute-api-v1:0.87.0+1.20.1'
-	modImplementation 'software.bernie.geckolib:geckolib-fabric-1.20.1:4.2.2'
+	// Fabric Loader
+	modImplementation "net.fabricmc:fabric-loader:0.14.22"
+
+	// Full Fabric API for 1.20.1
+	modImplementation "net.fabricmc.fabric-api:fabric-api:0.87.0+1.20.1"
+
+	// GeckoLib for Fabric 1.20
+	modImplementation "software.bernie.geckolib:geckolib-fabric-1.20:4.2.2"
 }
 
-java {
-	sourceCompatibility = JavaVersion.VERSION_21
-	targetCompatibility = JavaVersion.VERSION_21
-	withSourcesJar()
-}
-
-tasks.withType(JavaCompile).configureEach {
-	it.options.release = 21
-}
-
-processResources {
-	inputs.property 'version', project.version
-	filesMatching('fabric.mod.json') {
-		expand version: project.version
-	}
+loom {
+	// (keep any of your existing Loom customizations here)
 }
