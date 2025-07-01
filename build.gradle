@@ -1,5 +1,5 @@
 plugins {
-	id 'fabric-loom' version '1.3-SNAPSHOT'   // adjust if you’re on a newer Loom
+	id 'fabric-loom' version '1.3-SNAPSHOT'
 	id 'maven-publish'
 }
 
@@ -14,27 +14,26 @@ java {
 
 repositories {
 	mavenCentral()
-	// ← Fabric’s official Maven (hosts loader, API, mappings…)
-	maven { url = "https://maven.fabricmc.net/" }
-	// ← GeckoLib releases (optional)
-	maven { url = "https://maven.terraformersmc.com/releases" }
+	maven { url = "https://maven.fabricmc.net/" } // Required for Fabric
+	maven { url = "https://maven.terraformersmc.com/releases" } // Optional: GeckoLib
+	maven { url = "https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/" }
 }
 
 dependencies {
-	// The Minecraft game and Yarn mappings
+	// Minecraft and mappings
 	minecraft "com.mojang:minecraft:1.20.1"
-	mappings   "net.fabricmc:yarn:1.20.1+build.5:v2"
+	mappings "net.fabricmc:yarn:1.20.1+build.5:v2"
 
 	// Fabric Loader
 	modImplementation "net.fabricmc:fabric-loader:0.14.22"
 
-	// Full Fabric API for 1.20.1
+	// Full Fabric API (includes fabric-entity-attribute-api-v1)
 	modImplementation "net.fabricmc.fabric-api:fabric-api:0.87.0+1.20.1"
 
-	// GeckoLib for Fabric 1.20
-	modImplementation "software.bernie.geckolib:geckolib-fabric-1.20:4.2.2"
+	// GeckoLib (optional, if you're using animated models)
+	modImplementation "software.bernie.geckolib:geckolib-fabric-1.20.1:4.2.2"
 }
 
 loom {
-	// (keep any of your existing Loom customizations here)
+	// Keep any custom loom config here
 }
