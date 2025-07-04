@@ -7,9 +7,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.sound.SoundCategory;
-import net.minecraft.sound.SoundEvent;
-import net.minecraft.sound.SoundEvents;
+import net.minecraft.item.ItemUsage;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.UseAction;
@@ -22,26 +20,18 @@ public class PinkyDrinkItem extends Item {
 
     @Override
     public ItemStack finishUsing(ItemStack stack, World world, LivingEntity user) {
-        ItemStack result = super.finishUsing(stack, world, user); // ✅ ensure drink sound & effects
-
-        if (user instanceof PlayerEntity player) {
-            if (!player.getAbilities().creativeMode) {
-                stack.decrement(1);
-                ItemStack emptyBottle = new ItemStack(Items.GLASS_BOTTLE);
-                if (!player.getInventory().insertStack(emptyBottle)) {
-                    player.dropItem(emptyBottle, false);
-                }
-            }
-
-            player.getHungerManager().add(4, 0.3F);
-
-            // ✅ Add status effects
-            player.addStatusEffect(new StatusEffectInstance(StatusEffects.SPEED, 1800, 1));       // Speed II
-            player.addStatusEffect(new StatusEffectInstance(StatusEffects.RESISTANCE, 1800, 0));
-            player.addStatusEffect(new StatusEffectInstance(StatusEffects.REGENERATION, 1800, 1)); // Resistance I
+        if (!world.isClient && user instanceof PlayerEntity player) {
+            player.addStatusEffect(new StatusEffectInstance(StatusEffects.RESISTANCE, 4200, 1));
+            player.addStatusEffect(new StatusEffectInstance(StatusEffects.REGENERATION, 4200, 1));
+            player.addStatusEffect(new StatusEffectInstance(StatusEffects.SPEED, 4200, 0));
         }
 
-        return result;
+        if (user instanceof PlayerEntity player && !player.getAbilities().creativeMode) {
+            stack.decrement(1);
+            return new ItemStack(Items.GLASS_BOTTLE);
+        }
+
+        return stack;
     }
 
     @Override
@@ -55,13 +45,7 @@ public class PinkyDrinkItem extends Item {
     }
 
     @Override
-    public SoundEvent getDrinkSound() {
-        return SoundEvents.ENTITY_GENERIC_DRINK;
-    }
-
-    @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
-        user.setCurrentHand(hand);
-        return TypedActionResult.consume(user.getStackInHand(hand));
+        return ItemUsage.consumeHeldItem(world, user, hand);
     }
 }
