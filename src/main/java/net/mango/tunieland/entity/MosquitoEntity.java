@@ -17,7 +17,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.Heightmap;
-import net.minecraft.entity.SpawnRestriction;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
 
@@ -117,8 +116,8 @@ public class MosquitoEntity extends HostileEntity implements GeoAnimatable {
         }
     }
 
-    public static boolean canSpawnOnGrass(EntityType<MosquitoEntity> type, WorldAccess world, SpawnReason reason, BlockPos pos, Random random) {
-        return world.getBlockState(pos.down()).isOf(Blocks.GRASS_BLOCK) && world.getLightLevel(pos) > 8;
+    public static boolean canSpawnAnywhere(EntityType<MosquitoEntity> type, WorldAccess world, SpawnReason reason, BlockPos pos, Random random) {
+        return true; // Allow spawning everywhere
     }
 
     @Override

@@ -1,12 +1,10 @@
 package net.mango.tunieland.entity;
 
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
+import net.minecraft.entity.attribute.DefaultAttributeContainer;
 
 public class ModEntityAttributes {
     public static void register() {
-        FabricDefaultAttributeRegistry.register(
-                ModEntitySpawning.MOSQUITO,
-                MosquitoEntity.createMobAttributes()
-        );
+        FabricDefaultAttributeRegistry.register(ModEntities.MOSQUITO_ENTITY_TYPE, MosquitoEntity.createMosquitoAttributes());
     }
 }

@@ -1,29 +1,30 @@
 package net.mango.tunieland.item;
 
+import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
 import net.minecraft.item.ItemGroup;
-import net.minecraft.item.ItemGroups;
 import net.minecraft.item.ItemStack;
-import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
-import net.minecraft.text.Text;
+import net.minecraft.registry.Registries;
 import net.minecraft.util.Identifier;
+import net.minecraft.text.Text;
 import net.mango.tunieland.Tunieland;
-import net.minecraft.item.Items;
 
 public class ModItemGroups {
+
     public static final ItemGroup TUNIELAND_GROUP = Registry.register(
             Registries.ITEM_GROUP,
             new Identifier(Tunieland.MOD_ID, "tunieland"),
-            ItemGroup.create(
-                            ItemGroup.Row.TOP,
-                            0
-                    )
+            FabricItemGroup.builder()
                     .displayName(Text.translatable("itemgroup.tunieland"))
-                    .icon(() -> new ItemStack(Items.DIAMOND))
+                    .icon(() -> new ItemStack(ModItems.TUNIELAND_ICON))
                     .entries((displayContext, entries) -> {
+                        entries.add(ModItems.TUNIELAND_ICON);
                         entries.add(ModItems.SANGRE_DE_MOSQUITO);
-                        entries.add(ModItems.PINKY_DRINK);
                     })
                     .build()
     );
+
+    public static void registerItemGroups() {
+        Tunieland.LOGGER.info("Registering Item Groups for " + Tunieland.MOD_ID);
+    }
 }
