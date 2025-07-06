@@ -6,13 +6,20 @@ import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
 import net.mango.tunieland.Tunieland;
+import net.minecraft.item.FoodComponent;
 
 
 public class ModItems {
 
 
     public static final Item JOCOQUE = registerItem("jocoque",
-            new JocoqueItem(new FabricItemSettings()));
+            new JocoqueItem(new FabricItemSettings().food(
+                    new FoodComponent.Builder()
+                            .hunger(2)             // optional hunger
+                            .saturationModifier(0.3f) // optional saturation
+                            .alwaysEdible()        // allows eating even at full hunger
+                            .build()
+            )));
 
     public static final Item SANGRE_DE_MOSQUITO = registerItem("sangre_de_mosquito",
             new Item(new FabricItemSettings()));
