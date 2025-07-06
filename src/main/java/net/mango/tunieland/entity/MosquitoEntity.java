@@ -19,6 +19,7 @@ import net.minecraft.util.math.random.Random;
 import net.minecraft.world.Heightmap;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
+import net.minecraft.world.ServerWorldAccess;
 
 import net.mango.tunieland.item.ModItems;
 import net.mango.tunieland.entity.goal.MosquitoAttackGoal;
@@ -117,7 +118,15 @@ public class MosquitoEntity extends HostileEntity implements GeoAnimatable {
     }
 
     public static boolean canSpawnAnywhere(EntityType<MosquitoEntity> type, WorldAccess world, SpawnReason reason, BlockPos pos, Random random) {
-        return true; // Allow spawning everywhere
+        if (!world.getBlockState(pos.down()).isOf(Blocks.GRASS_BLOCK)) return false;
+        if (world.getLightLevel(pos) <= 8) return false;
+
+        return random.nextInt(100) < 30; // ✅ 100 must be > 0
+    }
+
+    // ✅ Used by SpawnRestriction.register with correct Random type
+    public static boolean canSpawn(EntityType<MosquitoEntity> type, ServerWorldAccess world, SpawnReason reason, BlockPos pos, Random random) {
+        return world.getLightLevel(pos) > 8 && world.getBlockState(pos.down()).isOf(Blocks.GRASS_BLOCK);
     }
 
     @Override

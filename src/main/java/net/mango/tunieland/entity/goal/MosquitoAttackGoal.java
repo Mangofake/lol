@@ -1,30 +1,62 @@
 package net.mango.tunieland.entity.goal;
 
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.goal.MeleeAttackGoal;
-import net.minecraft.entity.effect.StatusEffectInstance;
-import net.minecraft.entity.mob.PathAwareEntity;
-import net.minecraft.util.Hand;
+import net.mango.tunieland.entity.MosquitoEntity;
 import net.mango.tunieland.effect.ModEffects;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.ai.goal.Goal;
+import net.minecraft.entity.effect.StatusEffectInstance;
 
-public class MosquitoAttackGoal extends MeleeAttackGoal {
+import java.util.EnumSet;
 
-    public MosquitoAttackGoal(PathAwareEntity mob, double speed, boolean pauseWhenMobIdle) {
-        super(mob, speed, pauseWhenMobIdle);
+public class MosquitoAttackGoal extends Goal {
+    private final MosquitoEntity mosquito;
+    private final double speed;
+    private final boolean pauseWhenMobIdle;
+    private LivingEntity target;
+
+    public MosquitoAttackGoal(MosquitoEntity mosquito, double speed, boolean pauseWhenMobIdle) {
+        this.mosquito = mosquito;
+        this.speed = speed;
+        this.pauseWhenMobIdle = pauseWhenMobIdle;
+        this.setControls(EnumSet.of(Control.MOVE));
+    }
+
+    @Override
+    public boolean canStart() {
+        LivingEntity target = this.mosquito.getTarget();
+        return target != null && target.isAlive();
+    }
+
+    @Override
+    public void start() {
+        this.target = this.mosquito.getTarget();
+        this.mosquito.getNavigation().startMovingTo(this.target, this.speed);
+    }
+
+    @Override
+    public boolean shouldContinue() {
+        return this.target != null && this.target.isAlive();
+    }
+
+    @Override
+    public void stop() {
+        this.target = null;
     }
 
     @Override
     public void tick() {
-        super.tick();
+        if (this.target != null) {
+            this.mosquito.getLookControl().lookAt(this.target, 30.0F, 30.0F);
+            this.mosquito.getNavigation().startMovingTo(this.target, this.speed);
 
-        LivingEntity target = this.mob.getTarget();
-        if (target != null && this.mob.squaredDistanceTo(target) < 2.0) {
-            this.mob.swingHand(Hand.MAIN_HAND);
-
-            if (this.mob.tryAttack(target)) {
-                target.addStatusEffect(new StatusEffectInstance(ModEffects.DENGUE, 100, 0));
-                System.out.println("Mosquito hit " + target.getName().getString() + " and applied Dengue.");
+            if (this.mosquito.squaredDistanceTo(this.target) < 1.5D) {
+                // ✅ Safe delayed access
+                this.target.addStatusEffect(createDengueEffect());
             }
         }
+    }
+
+    private static StatusEffectInstance createDengueEffect() {
+        return new StatusEffectInstance(ModEffects.DENGUE, 100, 0);
     }
 }

@@ -15,11 +15,12 @@ public class ModItemGroups {
             Registries.ITEM_GROUP,
             new Identifier(Tunieland.MOD_ID, "tunieland"),
             FabricItemGroup.builder()
-                    .displayName(Text.translatable("itemgroup.tunieland"))
-                    .icon(() -> new ItemStack(ModItems.TUNIELAND_ICON))
+                    .displayName(Text.translatable("Tunieland"))
+                    .icon(() -> new ItemStack(ModItems.PINKY_DRINK))
                     .entries((displayContext, entries) -> {
-                        entries.add(ModItems.TUNIELAND_ICON);
+                        entries.add(ModItems.PINKY_DRINK);
                         entries.add(ModItems.SANGRE_DE_MOSQUITO);
+                        entries.add(ModItems.JOCOQUE);
                     })
                     .build()
     );
