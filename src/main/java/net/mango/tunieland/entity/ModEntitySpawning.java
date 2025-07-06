@@ -2,42 +2,34 @@ package net.mango.tunieland.entity;
 
 import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
 import net.fabricmc.fabric.api.biome.v1.BiomeSelectors;
-import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import net.minecraft.entity.SpawnGroup;
-import net.minecraft.entity.SpawnRestriction;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.registry.RegistryKey;
+import net.minecraft.registry.RegistryKeys;
 import net.minecraft.world.Heightmap;
 import net.minecraft.world.biome.Biome;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.entity.SpawnReason;
-import net.minecraft.entity.EntityType;
-
-import java.util.Random;
+import net.minecraft.entity.SpawnRestriction;
+import net.mango.tunieland.entity.MosquitoEntity;
 
 public class ModEntitySpawning {
 
     public static void register() {
-        // Register mosquito attributes (optional here, but also done in ModEntityAttributes)
-        FabricDefaultAttributeRegistry.register(
+        // Make mosquitoes spawn in all overworld biomes
+        BiomeModifications.addSpawn(
+                BiomeSelectors.all(),
+                SpawnGroup.AMBIENT,
                 ModEntities.MOSQUITO_ENTITY_TYPE,
-                MosquitoEntity.createMosquitoAttributes()
+                100, // spawn weight
+                2,  // min group size
+                4   // max group size
         );
 
-        // Register mosquito spawn restriction
+        // Set spawn rules for mosquitoes
         SpawnRestriction.register(
                 ModEntities.MOSQUITO_ENTITY_TYPE,
-                SpawnRestriction.Location.ON_GROUND,
-                Heightmap.Type.MOTION_BLOCKING_NO_LEAVES,
-                MosquitoEntity::canSpawn
-        );
-
-        // Add mosquitoes to overworld spawns
-        BiomeModifications.addSpawn(
-                BiomeSelectors.foundInOverworld(),
-                SpawnGroup.MONSTER,
-                ModEntities.MOSQUITO_ENTITY_TYPE,
-                10, 1, 3
+                SpawnRestriction.Location.NO_RESTRICTIONS,
+                Heightmap.Type.WORLD_SURFACE,
+                MosquitoEntity::canSpawnAnywhere
         );
     }
 }

@@ -16,7 +16,6 @@ import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.random.Random;
-import net.minecraft.world.Heightmap;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
 import net.minecraft.world.ServerWorldAccess;
@@ -80,6 +79,11 @@ public class MosquitoEntity extends HostileEntity implements GeoAnimatable {
     @Override
     public void tick() {
         super.tick();
+
+        if (!this.getWorld().isClient) {
+            this.setGlowing(true);
+        }
+
         if (!this.isSilent() && this.age % 60 == 0) {
             this.playSound(SoundEvents.ENTITY_BEE_LOOP, 0.5f, 1.0f);
         }
@@ -117,16 +121,23 @@ public class MosquitoEntity extends HostileEntity implements GeoAnimatable {
         }
     }
 
-    public static boolean canSpawnAnywhere(EntityType<MosquitoEntity> type, WorldAccess world, SpawnReason reason, BlockPos pos, Random random) {
-        if (!world.getBlockState(pos.down()).isOf(Blocks.GRASS_BLOCK)) return false;
-        if (world.getLightLevel(pos) <= 8) return false;
+    // Allow spawning on any block if light is high
+    public static boolean canSpawn(EntityType<MosquitoEntity> type, ServerWorldAccess world, SpawnReason reason, BlockPos pos, Random random) {
+        // Must be air at spawn point
+        if (!world.getBlockState(pos).isAir()) return false;
 
-        return random.nextInt(100) < 30; // ✅ 100 must be > 0
+        // Must be air above to avoid spawning under blocks
+        if (!world.getBlockState(pos.up()).isAir()) return false;
+
+        // Must be well-lit (daylight or bright enough)
+        return world.getLightLevel(pos) > 8 && random.nextInt(100) < 30;
     }
 
-    // ✅ Used by SpawnRestriction.register with correct Random type
-    public static boolean canSpawn(EntityType<MosquitoEntity> type, ServerWorldAccess world, SpawnReason reason, BlockPos pos, Random random) {
-        return world.getLightLevel(pos) > 8 && world.getBlockState(pos.down()).isOf(Blocks.GRASS_BLOCK);
+    // For use with BiomeModifications — allows same logic if called
+    public static boolean canSpawnAnywhere(EntityType<MosquitoEntity> type, WorldAccess world, SpawnReason reason, BlockPos pos, Random random) {
+        if (!world.getBlockState(pos).isAir()) return false;
+        if (!world.getBlockState(pos.up()).isAir()) return false;
+        return world.getLightLevel(pos) > 8 && random.nextInt(100) < 30;
     }
 
     @Override
