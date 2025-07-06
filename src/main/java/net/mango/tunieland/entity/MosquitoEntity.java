@@ -141,6 +141,12 @@ public class MosquitoEntity extends HostileEntity implements GeoAnimatable {
     }
 
     @Override
+    public boolean canImmediatelyDespawn(double distanceSquared) {
+        return true; // Always allow despawn when far
+    }
+
+
+    @Override
     public double getTick(Object custom) {
         return this.age;
     }

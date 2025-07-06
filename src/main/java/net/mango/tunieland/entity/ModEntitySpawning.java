@@ -19,9 +19,9 @@ public class ModEntitySpawning {
                 BiomeSelectors.all(),
                 SpawnGroup.AMBIENT,
                 ModEntities.MOSQUITO_ENTITY_TYPE,
-                100, // spawn weight
-                2,  // min group size
-                4   // max group size
+                30 , // spawn weight
+                1,  // min group size
+                2   // max group size
         );
 
         // Set spawn rules for mosquitoes
