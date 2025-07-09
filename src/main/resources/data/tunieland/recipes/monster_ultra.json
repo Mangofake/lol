@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "   ",
+    " M ",
+    "SWS"
+  ],
+  "key": {
+    "M": {
+      "item": "minecraft:snowball"
+    },
+    "W": {
+      "item": "minecraft:potion"
+    },
+    "S": {
+      "item": "minecraft:sugar"
+    }
+  },
+  "result": {
+    "item": "tunieland:monster_ultra",
+    "count": 1
+  }
+}

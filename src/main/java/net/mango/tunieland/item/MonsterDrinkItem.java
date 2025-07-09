@@ -22,28 +22,27 @@ public class MonsterDrinkItem extends Item {
             Item item = stack.getItem();
 
             if (item == ModItems.MONSTER_DRINK_MANGO) {
-                player.addStatusEffect(new StatusEffectInstance(StatusEffects.SPEED, 20 * 30, 1));
-                player.addStatusEffect(new StatusEffectInstance(StatusEffects.HASTE, 20 * 30, 1));
-                player.addStatusEffect(new StatusEffectInstance(StatusEffects.JUMP_BOOST, 20 * 30, 0));
+                player.addStatusEffect(new StatusEffectInstance(StatusEffects.SPEED, 20 * 90, 1));
             } else if (item == ModItems.MONSTER_DRINK_PUNCH) {
-                player.addStatusEffect(new StatusEffectInstance(StatusEffects.HASTE, 20 * 30, 1));
+                player.addStatusEffect(new StatusEffectInstance(StatusEffects.HASTE, 20 * 90, 1));
             } else if (item == ModItems.MONSTER_DRINK_ULTRA) {
-                player.addStatusEffect(new StatusEffectInstance(StatusEffects.JUMP_BOOST, 20 * 30, 1));
+                player.addStatusEffect(new StatusEffectInstance(StatusEffects.JUMP_BOOST, 20 * 90, 1));
             } else if (item == ModItems.MONSTER_DRINK) {
-                player.addStatusEffect(new StatusEffectInstance(StatusEffects.NIGHT_VISION, 20 * 30, 1));
+                player.addStatusEffect(new StatusEffectInstance(StatusEffects.NIGHT_VISION, 20 * 90, 1));
             }
 
             if (!player.getAbilities().creativeMode) {
-                stack.decrement(1); // ✅ actually consume the item
+                stack.decrement(1);
             }
         }
 
-        return super.finishUsing(stack, world, user); // important to return super
+        // Don't call super — this avoids the eating "crunch" sound
+        return stack.isEmpty() ? ItemStack.EMPTY : stack;
     }
 
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
-        user.setCurrentHand(hand); // ✅ triggers drinking animation
+        user.setCurrentHand(hand);
         return TypedActionResult.consume(user.getStackInHand(hand));
     }
 
@@ -54,6 +53,6 @@ public class MonsterDrinkItem extends Item {
 
     @Override
     public int getMaxUseTime(ItemStack stack) {
-        return 32; // standard time for drinking
+        return 32;
     }
 }

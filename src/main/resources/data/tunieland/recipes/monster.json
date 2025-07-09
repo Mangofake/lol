@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "   ",
+    " M ",
+    "SWS"
+  ],
+  "key": {
+    "M": {
+      "item": "minecraft:spider_eye"
+    },
+    "W": {
+      "item": "minecraft:potion"
+    },
+    "S": {
+      "item": "minecraft:sugar"
+    }
+  },
+  "result": {
+    "item": "tunieland:monster",
+    "count": 1
+  }
+}
