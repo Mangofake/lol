@@ -45,6 +45,9 @@ public class ModItems {
             new MonsterDrinkItem(new FabricItemSettings()));
 
 
+    public static final Item MANGO = registerItem("mango",
+            new MangoItem(new FabricItemSettings()));
+
     public static void registerModItems() {
         Tunieland.LOGGER.info("Registering ModItems for " + Tunieland.MOD_ID);
     }

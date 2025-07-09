@@ -1,6 +1,7 @@
 package net.mango.tunieland;
 
 import net.fabricmc.api.ModInitializer;
+import net.mango.tunieland.blocks.Jungles_Leaves.ModLootTableModifiers;
 import net.mango.tunieland.entity.ModEntities;
 import net.mango.tunieland.entity.ModEntityAttributes;
 import net.mango.tunieland.entity.ModEntitySpawning;
@@ -22,6 +23,7 @@ public class Tunieland implements ModInitializer {
 		ModEntities.register();               // ✅ Calls the fixed method
 		ModEntityAttributes.register();
 		ModEntitySpawning.register();
+		ModLootTableModifiers.modifyLootTables();
 
 	}
 }
