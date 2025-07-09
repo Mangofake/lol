@@ -22,5 +22,6 @@ public class Tunieland implements ModInitializer {
 		ModEntities.register();               // ✅ Calls the fixed method
 		ModEntityAttributes.register();
 		ModEntitySpawning.register();
+
 	}
 }
