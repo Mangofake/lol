@@ -31,6 +31,21 @@ public class ModItems {
         return Registry.register(Registries.ITEM, new Identifier(Tunieland.MOD_ID, name), item);
     }
 
+    public static final Item MONSTER_DRINK_MANGO = registerItem("monster_mango",
+            new MonsterDrinkItem(new FabricItemSettings().food(new FoodComponent.Builder()
+                    .hunger(1)
+                    .saturationModifier(0.5f)
+                    .alwaysEdible()
+                    .build())));
+    public static final Item MONSTER_DRINK_PUNCH = registerItem("monster_punch",
+            new MonsterDrinkItem(new FabricItemSettings()));
+    public static final Item MONSTER_DRINK = registerItem("monster",
+            new MonsterDrinkItem(new FabricItemSettings()));
+    public static final Item MONSTER_DRINK_ULTRA = registerItem("monster_ultra",
+            new MonsterDrinkItem(new FabricItemSettings()));
+
+
+
     public static void registerModItems() {
         Tunieland.LOGGER.info("Registering ModItems for " + Tunieland.MOD_ID);
     }
