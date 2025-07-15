@@ -26,6 +26,7 @@ public class ModItemGroups {
                         entries.add(ModItems.MONSTER_DRINK_ULTRA);
                         entries.add(ModItems.MONSTER_DRINK);
                         entries.add(ModItems.MANGO);
+                        entries.add(ModItems.TUNIELAND_BOOK);
                     })
                     .build()
     );

@@ -45,6 +45,10 @@ public class ModItems {
             new MonsterDrinkItem(new FabricItemSettings()));
 
 
+    public static final Item TUNIELAND_BOOK = registerItem("tunieland_book",
+            new TunielandBookItem(new FabricItemSettings().maxCount(1)));
+
+
     public static final Item MANGO = registerItem("mango",
             new MangoItem(new FabricItemSettings()));
 
